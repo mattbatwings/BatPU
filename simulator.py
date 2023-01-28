@@ -4,7 +4,7 @@ def main():
   verbose = True
 
   if len(sys.argv) != 2:
-    'Usage: simulator.py {machine code file (.mc)}'
+    'Usage: simulator.py {machine code file}'
     exit()
 
   opcode_labels = {

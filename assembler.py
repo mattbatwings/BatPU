@@ -1,12 +1,12 @@
 import sys
 
 def main():
-    if len(sys.argv) != 2:
-      'Usage: assembler.py {assembly file (.as)}'
-      exit()  
+    if len(sys.argv) != 3:
+      'Usage: assembler.py {assembly file} {machine code file}'
+      exit() 
 
     assembly_file = open(sys.argv[1], 'r')
-    machine_code_file = open('output.mc', 'w')
+    machine_code_file = open(sys.argv[2], 'w')
     lines = (line.rstrip() for line in assembly_file)
 
     def remove_comment(comment_symbol, line):
@@ -62,7 +62,6 @@ def main():
         # remove label, we have it in symbols now
         if words[0] not in all_opcodes:
             words = words[1:]
-
         
         # special ops
         if words[0] == 'lsh':
