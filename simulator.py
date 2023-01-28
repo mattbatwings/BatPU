@@ -3,8 +3,9 @@ import sys
 def main():
   verbose = True
 
-  if len(sys.argv) > 2:
-    'Usage: simulator.py {machine code file}'
+  if len(sys.argv) != 2:
+    'Usage: simulator.py {machine code file (.mc)}'
+    exit()
 
   opcode_labels = {
     0: 'nop',
@@ -90,8 +91,6 @@ def main():
       case 'bif':
         pc = address if flags[flag] else pc + 1
 
-    registers[0] = 0
-
     if opcode not in ['jmp', 'bif']:
       pc += 1
 
@@ -100,7 +99,7 @@ def main():
     if opcode in ['add', 'sub', 'orr', 'nor', 'and', 'xor', 'inc', 'dec', 'rsh']:
       flags[0] = True if (registers[regDest] == 0) else False
       flags[1] = True if (registers[regDest] & 256 == 256) else False
-      if opcode == 'RSH' and (registers[regA] % 2 == 1):
+      if opcode == 'rsh' and (registers[regA] % 2 == 1):
         flags[1] = True
 
     for i in range(NUM_REGS):
@@ -114,6 +113,7 @@ def main():
         print(f'Register {index}: {value}')
       print(f'Flag Zero: {flags[0]}')
       print(f'Flag Carry: {flags[1]}')
+      print(f'Data Memory: {data_memory}')
       print()
 
 if __name__ == '__main__':
