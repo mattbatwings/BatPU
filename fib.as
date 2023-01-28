@@ -14,6 +14,3 @@ loop sub r4 r4 r0
      dec r4 r4
      jmp loop
 done hlt
-
-/ 0 returns 0
-/ 1 returns 
