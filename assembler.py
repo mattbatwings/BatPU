@@ -1,5 +1,11 @@
-def main():    
-    assembly_file = open('fib.as', 'r')
+import sys
+
+def main():
+    if len(sys.argv) != 2:
+      'Usage: assembler.py {assembly file (.as)}'
+      exit()  
+
+    assembly_file = open(sys.argv[1], 'r')
     machine_code_file = open('output.mc', 'w')
     lines = (line.rstrip() for line in assembly_file)
 
@@ -57,11 +63,22 @@ def main():
         if words[0] not in all_opcodes:
             words = words[1:]
 
+        
+        # special ops
+        if words[0] == 'lsh':
+            words = ['add', words[1], words[2], words[2]]
+        elif words[0] == 'cmp':
+            words = ['sub', 'r0', words[1], words[2]]
+        elif words[0] == 'cpy':
+            words = ['add', words[1], words[2], 'r0']
+        elif words[0] == 'not':
+            words = ['nor', words[1], words[2], 'r0']
+
+        # begin machine code translation
         opcode = words[0]
         machine_code = (symbols[opcode] << 12)
-
         words = [resolve(word) for word in words]
-
+        
         if opcode in ['add', 'sub', 'orr', 'nor', 'and', 'xor', 'inc', 'dec', 'rsh', 'ldi', 'lod']: # Reg Dest
             machine_code |= (words[1] << 9)
             
