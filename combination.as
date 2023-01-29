@@ -3,14 +3,18 @@
 / assumes n >= r
 / result in r5
 
-define n 12
-define r 9
+define n 3
+define r 3
 
      ldi r1 #1
      str r1
 
      ldi r1 n 
      ldi r2 r
+
+     cmp r1 r2
+     bif zero eq
+
      sub r1 r1 r2 
      cpy r3 r1
      inc r2 r2
@@ -32,4 +36,5 @@ lin  cmp r1 r0
      jmp lin   
 din  dec r2 r2
      jmp lout
+eq   ldi r5 #1
 dout hlt
