@@ -7,7 +7,7 @@ def main():
 
     assembly_file = open(sys.argv[1], 'r')
     machine_code_file = open(sys.argv[2], 'w')
-    lines = (line.rstrip() for line in assembly_file)
+    lines = (line.strip() for line in assembly_file)
 
     def remove_comment(comment_symbol, line):
         for index, char in enumerate(line):
@@ -33,45 +33,49 @@ def main():
     flags = ['zero', 'carry']
     for index, symbol in enumerate(flags):
         symbols[symbol] = index
-
-    special_opcodes = ['lsh', 'cmp', 'cpy', 'not']
-    all_opcodes = opcodes + special_opcodes
+    
+    def is_definition(word):
+        return word == 'define'
+    
+    def is_label(word):
+        return word[0] == '.'
     
     # add definitions and labels to symbol table
+    # expects all definitions to be above assembly
     offset = 0
     for index, line in enumerate(lines):
         words = line.split()
-        if words[0] == 'define':
+        if is_definition(words[0]):
             symbols[words[1]] = int(words[2])
             offset += 1
-        elif words[0] not in all_opcodes:
+        elif is_label(words[0]):
             symbols[words[0]] = index - offset
-
+    
+    # generate machine code
     def resolve(word):
         if word[0] == '#':
             return int(word[1:])
         return symbols.get(word)
     
-    # generate machine code
+    print(lines)
+    
     for i in range(offset, len(lines)):
         line = lines[i]
         words = line.split()
-        
-        machine_code = 0
 
         # remove label, we have it in symbols now
-        if words[0] not in all_opcodes:
+        if is_label(words[0]):
             words = words[1:]
         
         # special ops
         if words[0] == 'lsh':
             words = ['add', words[1], words[2], words[2]]
         elif words[0] == 'cmp':
-            words = ['sub', 'r0', words[1], words[2]]
+            words = ['sub', registers[0], words[1], words[2]]
         elif words[0] == 'cpy':
-            words = ['add', words[1], words[2], 'r0']
+            words = ['add', words[1], words[2], registers[0]]
         elif words[0] == 'not':
-            words = ['nor', words[1], words[2], 'r0']
+            words = ['nor', words[1], words[2], registers[0]]
 
         # begin machine code translation
         opcode = words[0]
