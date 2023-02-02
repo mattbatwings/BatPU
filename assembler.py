@@ -17,7 +17,7 @@ def main():
 
     # remove comments and blanklines
     lines = [remove_comment("/", line) for line in lines]
-    lines = [line for line in lines if line]
+    lines = [line for line in lines if line.strip()]
     
     # add registers, opcodes, and flags to symbols
     symbols = {}
