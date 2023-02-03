@@ -6,7 +6,9 @@ define iterations 13
 
       ldi r2 #1
       ldi r4 iterations
-.loop cmp r4 r0
+      ldi r7 #63
+.loop str r3
+      cmp r4 r0
       bif zero .done
       cpy r1 r2
       cpy r2 r3
