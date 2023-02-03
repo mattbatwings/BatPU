@@ -9,6 +9,7 @@ define b 12
       ldi r2 b
       ldi r4 #8
       ldi r5 #1
+      ldi r7 #63
 .loop cmp r4 r0
       bif zero .done
       and r0 r1 r5
@@ -18,4 +19,5 @@ define b 12
       lsh r2 r2
       dec r4 r4
       jmp .loop
-.done hlt
+.done str r3
+      hlt
