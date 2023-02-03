@@ -57,8 +57,6 @@ def main():
             return int(word[1:])
         return symbols.get(word)
     
-    print(lines)
-    
     for i in range(offset, len(lines)):
         line = lines[i]
         words = line.split()
