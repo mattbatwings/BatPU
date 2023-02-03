@@ -1,7 +1,7 @@
 import sys
 
 def main():
-  verbose = True
+  debug = True
 
   if len(sys.argv) != 2:
     'Usage: simulator.py {machine code file}'
@@ -45,6 +45,9 @@ def main():
   running = True
   cycles = 0
 
+  screen_size = 32
+  screen = [[0 for _ in range(screen_size)] for _ in range(screen_size)]
+  
   while running:
     registers[0] = 0
 
@@ -98,14 +101,25 @@ def main():
 
     if opcode in ['add', 'sub', 'orr', 'nor', 'and', 'xor', 'inc', 'dec', 'rsh']:
       flags[0] = True if (registers[regDest] == 0) else False
-      flags[1] = True if (registers[regDest] & 256 == 256) else False
+      registers[0] = 0
+      flags[1] = True if (registers[regB] > registers[regA]) else False
       if opcode == 'rsh' and (registers[regA] % 2 == 1):
         flags[1] = True
 
-    for i in range(NUM_REGS):
-        registers[i] &= 255
+    number_display = data_memory[63]
+    screen_x = data_memory[62]
+    screen_y = data_memory[61]
+    screen_opcode = data_memory[60]
 
-    if verbose:
+    match (screen_opcode):
+      case 1: # clear screen
+        screen = [[0 for _ in range(screen_size)] for _ in range(screen_size)]
+      case 2:
+        screen[screen_y][screen_x] = 1
+      case 3:
+        screen[screen_y][screen_x] = 0
+    
+    if debug:
       print(f'Cycle #{cycles}:')
       print(f'Instruction: {opcode}')
       print('----------------')
@@ -114,7 +128,12 @@ def main():
       print(f'Flag Zero: {flags[0]}')
       print(f'Flag Carry: {flags[1]}')
       print(f'Data Memory: {data_memory}')
-      print()
+    
+    print(f'NUMBER DISPLAY: {number_display}')
+    print('SCREEN:')
+    for row in screen:
+      print(row)
+    print()
 
 if __name__ == '__main__':
     main()
