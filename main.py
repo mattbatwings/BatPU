@@ -5,7 +5,7 @@ from schematic import make_schematic
 
 # for schematic
 path = 'C:/Users/12483/AppData/Roaming/.minecraft/config/worldedit/schematics'
-name = 'paint'
+name = 'program'
 version = mcschematic.Version.JE_1_18_2
 
 def assemble_to_schematic(assembly_filename):
@@ -20,7 +20,7 @@ def assemble_and_simulate(assembly_filename):
     simulate(machine_code_layer)
 
 def main():
-    program = 'newpaint'
+    program = 'fib'
     
     assemble_to_schematic(f'programs/{program}.as')
     # assemble_and_simulate(f'programs/{program}.as')
