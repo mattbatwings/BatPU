@@ -2,7 +2,7 @@
 
 ### What is this repo?
 
-This is all the supporting code for the [8-bit computer I made in Minecraft]().
+This is all the supporting code I wrote for the [8-bit computer I made in Minecraft]().
 
 ## How can I use it?
 
