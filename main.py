@@ -9,7 +9,6 @@ name = 'program'
 version = mcschematic.Version.JE_1_18_2
 
 def assemble_to_schematic(assembly_filename):
-    global path, name, version
     machine_code_layer = 'output.mc'
     assemble(assembly_filename, machine_code_layer)
     make_schematic(machine_code_layer, path, name, version)

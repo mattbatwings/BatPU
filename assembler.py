@@ -4,10 +4,7 @@ def assemble(assembly_filename, output_filename):
     lines = (line.strip() for line in assembly_file)
 
     def remove_comment(comment_symbol, line):
-        for index, char in enumerate(line):
-            if char == comment_symbol:
-                return line[:index]
-        return line
+        return line.split(comment_symbol)[0]
 
     # remove comments and blanklines
     lines = [remove_comment("/", line) for line in lines]
